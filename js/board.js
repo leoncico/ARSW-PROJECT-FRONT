@@ -40,7 +40,7 @@ const boardApp = (function () {
                 return;
         }
 
-        stompClient.send(apiUrl + `/app/${username}/move`, {}, JSON.stringify({
+        stompClient.send(`/app/${username}/move`, {}, JSON.stringify({
             posX:x,
             posY:y,
             newPosX:newPosX,
@@ -61,49 +61,6 @@ const boardApp = (function () {
                 .then(() => {
                     stompClient.send('/topic/matches/1/movement', {}, JSON.stringify(username));
                 })
-    }
-
-    function updateTanksBoard() {
-        const board = document.getElementById('gameBoard');
-        const cells = board.getElementsByClassName('cell');
-
-        // Limpiar el contenido de cada celda antes de redibujar
-        for (let cell of cells) {
-            cell.innerHTML = '';
-        }
-
-        for (let y = 0; y < ROWS; y++) {
-            for (let x = 0; x < COLS; x++) {
-                const cellIndex = y * COLS + x;
-                const cell = cells[cellIndex];
-
-                switch (gameBoard[y][x]) {
-                    case '1':  // Muro
-                        cell.classList.add('wall');
-                        break;
-
-                    case '0':  // Espacio vacío
-                        cell.classList.remove('wall');
-                        break;
-
-                    default:   // Tanque u otro objeto
-                        const tankId = gameBoard[y][x];
-                        const tankData = tanks.get(tankId);
-
-                        if (tankData) {
-                            const tankElement = document.createElement('div');
-                            tankElement.className = 'tank';
-                            tankElement.id = `tank-${tankId}`;
-                            tankElement.style.backgroundColor = tankData.color;
-
-                            tankElement.style.transform = `translate(-50%, -50%) rotate(${tankData.rotation}deg)`;
-
-                            cell.appendChild(tankElement);
-                        }
-                        break;
-                }
-            }
-        }
     }
 
     function updateTankPosition(name, newPosX, newPosY, rotation) {
@@ -133,7 +90,7 @@ const boardApp = (function () {
     function shoot() {
         const bulletId = `bullet-${Date.now()}`;
         console.log(JSON.stringify(bulletId));
-        stompClient.send(apiUrl + `/app/${username}/shoot`, {}, bulletId);
+        stompClient.send(`/app/${username}/shoot`, {}, bulletId);
         const startX = userTank.posx;
         const startY = userTank.posy;
         const direction = userTank.rotation;
@@ -289,6 +246,9 @@ const boardApp = (function () {
             const cellIndex = data.posy * COLS + data.posx;
             cells[cellIndex].appendChild(tankElement);
         });
+        tanks.forEach((value, key) => {
+            gameBoard[value.posy][value.posx] = "0";
+        });
     }
 
     function subscribe(){
@@ -297,6 +257,9 @@ const boardApp = (function () {
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
+
+			console.log('Connected: ' + frame);
+    		console.log('Connection details:', socket);
 
             stompClient.subscribe(`/topic/matches/1/movement`, function (eventbody) {
                 const updatedTank = JSON.parse(eventbody.body);
@@ -386,12 +349,10 @@ const boardApp = (function () {
     }
 
     function init(){
-        api.getUsername()
-            .then(function(data){
-                username = data;
-            })
+        username = sessionStorage.getItem('username');
+		console.log(username);
 
-        .then(() => api.getBoard())
+        api.getBoard()
             .then(function(board){
                 gameBoard = board;
             })
