@@ -9,14 +9,20 @@
   },
   "scripts": {
     "test": "jest",
-    "coverage":"jest --coverage"
+    "coverage": "jest --coverage"
   },
-  "jest": {
-    "colletCoverage": true,
-    "testResultProccessor":"jest-sonar-reporter",
-    "coveragePathIgnorePatterns":["/node_modules","/test/"],
+  // "jest": {
+  //   "colletCoverage": true,
+  //   "testResultProccessor": "jest-sonar-reporter",
+  //   "coveragePathIgnorePatterns": [
+  //     "/node_modules",
+  //     "/test/"
+  //   ],
     "coverageDirectory": "./coverage",
-    "coverageReporters": ["lcov", "text"],
+    "coverageReporters": [
+      "lcov",
+      "text"
+    ],
     "testEnvironment": "jsdom"
   },
   "dependencies": {
