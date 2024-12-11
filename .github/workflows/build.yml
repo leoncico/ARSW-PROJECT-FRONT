@@ -26,6 +26,9 @@ jobs:
       - name: Install dependencies
         run: npm install  # Instala las dependencias de tu proyecto
 
+      - name: Add execute permissions for Jest
+        run: chmod +x node_modules/.bin/jest  # Añadir permisos de ejecución a Jest
+
       - name: Run tests with coverage
         run: npm test -- --coverage  # Ejecuta las pruebas y genera el informe de cobertura
 
@@ -37,4 +40,3 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  # Token de SonarCloud
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Token de GitHub para obtener información de PR
-
