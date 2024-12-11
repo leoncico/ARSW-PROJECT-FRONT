@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testExecutions version="1">
+  <file path="C:\Users\User\Desktop\LEOTANKCICOS\ARSW-PROJECT-FRONT\tests\board.test.js">
+    <testCase name="moveTank function should move tank correctly left" duration="6"/>
+    <testCase name="moveTank function should move tank right" duration="3"/>
+    <testCase name="moveTank function should move tank up" duration="2"/>
+    <testCase name="moveTank function should move tank down" duration="2"/>
+    <testCase name="rotateTank function should rotate the tank by the given degrees" duration="4"/>
+    <testCase name="rotateTank function should rotate tank to 180 degrees" duration="3"/>
+    <testCase name="rotateTank function should rotate tank to 270 degrees" duration="2"/>
+    <testCase name="rotateTank function should not rotate tank for invalid degrees" duration="5"/>
+    <testCase name="displayWinner should update the winnerName textContent with the winner&apos;s name" duration="2"/>
+    <testCase name="displayWinner should remove the winner from the tanks map" duration="0"/>
+    <testCase name="displayWinner should call initializeBoard" duration="1"/>
+    <testCase name="displayWinner should set the winnerModal style to display block" duration="0"/>
+    <testCase name="displayWinner should call resetAfterWin" duration="1"/>
+  </file>
+</testExecutions>
