@@ -1,3 +1,5 @@
+const { apiClient } = require('./apiClient');
+
 const boardApp = (function () {
 
     const ROWS = 10;
@@ -11,7 +13,7 @@ const boardApp = (function () {
         // isMoving = true; // Activar el bloqueo de movimiento al inicio
 
         let x = userTank.posx;
-        let y = userTank.posy;
+        let y = userTanks.posy;
         let dir = userTank.rotation;
 
         let newPosX = x;
@@ -380,3 +382,4 @@ const boardApp = (function () {
         init: init,
     }
 })();
+module.exports = boardApp;
