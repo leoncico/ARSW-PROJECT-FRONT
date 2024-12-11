@@ -11,14 +11,6 @@
     "test": "jest",
     "coverage":"jest --coverage"
   },
-  // "jest": {
-  //   "colletCoverage": true,
-  //   "testResultProccessor":"jest-sonar-reporter",
-  //   "coveragePathIgnorePatterns":["/node_modules","/test/"],
-  //   "coverageDirectory": "./coverage",
-  //   "coverageReporters": ["lcov", "text"],
-  //   "testEnvironment": "jsdom"
-  // },
   "dependencies": {
     "stompjs": "^2.3.3"
   },
