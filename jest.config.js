@@ -9,3 +9,4 @@ export default {
     testResultsProcessor: 'jest-sonar-reporter',  // Procesador de resultados para enviar a SonarCloud
   };
   
+  
