@@ -7,11 +7,6 @@ const boardApp = (function () {
     const apiUrl = "https://leotankcicos-cpeaeeh0d0hjfvef.eastus2-01.azurewebsites.net";
 
     function moveTank(direction) {
-        // if (!userTank || isMoving)
-        //     return; // Si no hay tanque del usuario o está en movimiento, no hacer nada
-
-        // isMoving = true; // Activar el bloqueo de movimiento al inicio
-
         let x = userTank.posx;
         let y = userTanks.posy;
         let dir = userTank.rotation;
@@ -38,7 +33,6 @@ const boardApp = (function () {
                 break;
             default:
                 console.error('Dirección inválida:', direction);
-                //isMoving = false;
                 return;
         }
 
@@ -255,7 +249,7 @@ const boardApp = (function () {
 
     function subscribe(){
         console.info('Connecting to WS...');
-        var socket = new SockJS(apiUrl + '/stompendpoint');
+        let socket = new SockJS(apiUrl + '/stompendpoint');
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
@@ -290,7 +284,6 @@ const boardApp = (function () {
                 const data = JSON.parse(eventbody.body);
                 const tankDeleted = data.tank;
                 tanks.delete(tankDeleted);
-                //gameBoard[data.y][data.x] = 0;
                 const bulletId = data.bulletId;
                 const tankElement = document.getElementById(`tank-${tankDeleted}`);
                 $(`#${bulletId}`).remove();

@@ -71,7 +71,6 @@ html,body {
     width: 20px;
     height: 6px;
     background-color: rgb(255, 255, 255);
-    /* background-color: var(--crosshair-color, #000000); */
     top: 50%;
     left: 100%;
     transform: translateY(-50%);

@@ -1,5 +1,5 @@
-var indexApp = (function () {
-    var tank;
+let indexApp = (function () {
+    let tank;
     const api = "https://leotankcicos-cpeaeeh0d0hjfvef.eastus2-01.azurewebsites.net";  // Cambia esto según la URL de tu backend
 
     const pageModal = document.getElementById("modal-overlay");

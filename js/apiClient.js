@@ -39,9 +39,6 @@ const apiClient = (function(){
     function getTanks() {
         return new Promise((resolve, reject) => {
             $.get(api + "/api/tanks", function (data) {
-                // data.forEach(tank => {
-                //     tanks.set(tank.name, tank);
-                // });
                 resolve(data);
             }).fail(function () {
                 alert("There are no tanks");

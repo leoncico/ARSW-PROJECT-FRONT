@@ -1,13 +1,12 @@
-var lobbyApp = (function () {
-    var username;
-    var stompClient;
-    var tanksElem;
-    var tankList;
-    var tankNumber;
+let lobbyApp = (function () {
+    let username;
+    let stompClient;
+    let tanksElem;
+    let tankList;
+    let tankNumber;
     const api = "https://leotankcicos-cpeaeeh0d0hjfvef.eastus2-01.azurewebsites.net";
-	// var accessToken;
 	
-    var getUsernameFromSession = function() {
+    let getUsernameFromSession = function() {
 		return $.get(api + "/api/tanks/username")
             .done(function(data) {
                 username = data;
@@ -18,7 +17,7 @@ var lobbyApp = (function () {
             });
 	};
 
-    var loadTanks = function() {
+    let loadTanks = function() {
         return new Promise((resolve, reject) => {
             $.get(api + "/api/tanks")
                 .done(function(tanks) {
@@ -36,9 +35,9 @@ var lobbyApp = (function () {
         });
     };
 
-    var subscribe = function () {
+    let subscribe = function () {
         console.info('Connecting to WS...');
-        var socket = new SockJS(api + '/stompendpoint');
+        let socket = new SockJS(api + '/stompendpoint');
         stompClient = Stomp.over(socket);
         
         return new Promise((resolve, reject) => {
@@ -62,7 +61,7 @@ var lobbyApp = (function () {
         });
     };
 
-    var displayTanks = function(tanks) {
+    let displayTanks = function(tanks) {
         tanksElem = $('#tanksList');
         tanksElem.empty();
         tankNumber = 
@@ -72,15 +71,13 @@ var lobbyApp = (function () {
 
     };
 
-    var connect = function() {
+    let connect = function() {
         stompClient.send("/topic/lobby/1", {}, JSON.stringify(username));
     }
 
     return {
         init: function() {
-			// accessToken = sessionStorage.getItem("access_token");
 			username = sessionStorage.getItem("username");
-			// console.log(accessToken);
 			console.log(username);
 			
             //getUsernameFromSession()
