@@ -260,26 +260,7 @@ describe('displayWinner', () => {
   });
 });
 
-describe('animateBullet', () => {
-  let mockCreateElement;
-  let mockGetElementsByClassName;
 
-  beforeEach(() => {
-    // Mock de document.createElement
-    mockCreateElement = jest.spyOn(document, 'createElement').mockImplementation((tagName) => {
-      return { className: '', id: '' }; // Retorna un objeto con las propiedades que necesitas
-    });
-
-    // Mock de document.getElementsByClassName
-    mockGetElementsByClassName = jest.spyOn(document, 'getElementsByClassName').mockImplementation(() => {
-      return [{ appendChild: jest.fn() }]; // Retorna un array de celdas con un mock para appendChild
-    });
-  });
-
-  afterEach(() => {
-    jest.restoreAllMocks(); // Restauramos los mocks después de cada prueba
-  });
-});
 
 
 

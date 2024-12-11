@@ -8,9 +8,13 @@
     "jest-environment-jsdom": "^29.7.0"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "coverage":"jest --coverage"
   },
   "jest": {
+    "colletCoverage": true,
+    "testResultProccessor":"jest-sonar-reporter",
+    "coveragePathIgnorePatterns":["/node_modules","/test/"],
     "coverageDirectory": "./coverage",
     "coverageReporters": ["lcov", "text"],
     "testEnvironment": "jsdom"
