@@ -1,28 +1,47 @@
-name: SonarCloud Analysis
+name: Build and Analyze
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
-  sonarcloud:
+  sonarqube:
+    name: SonarQube Analysis
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # No shallow clone, necesario para un análisis más relevante
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: '16'  # Cambia a la versión que necesites
 
-      - name: Install SonarScanner
-        run: |
-          npm install -g sonar-scanner
+      - name: Install dependencies
+        run: npm install  # Instala las dependencias de tu proyecto
 
-      - name: Run SonarScanner
-        run: sonar-scanner
+      - name: Add execute permissions for Jest
+        run: chmod +x node_modules/.bin/jest  # Añadir permisos de ejecución a Jest
+
+      - name: Run tests with coverage
+        run: npm test -- --coverage  # Ejecuta las pruebas y genera el informe de cobertura
+
+      - name: SonarCloud Analysis
+        uses: SonarSource/sonarqube-scan-action@v4
+        with:
+          projectKey: leoncico_ARSW-PROJECT-FRONT  # Cambia esto a tu clave de proyecto en SonarCloud
+          organization: leoncico-2  # Cambia esto a tu organización en SonarCloud
+          additionalArguments: >
+            -Dsonar.sources=src  # Incluir solo el código fuente desde el directorio src
+            -Dsonar.tests=src/tests  # Incluir solo las pruebas desde el directorio src/tests
+            -Dsonar.inclusions=**/*.js,**/*.ts  # Incluir archivos .js y .ts
+            -Dsonar.exclusions=**/*.test.js,**/*.test.ts  # Excluir los archivos de prueba de la fuente
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  # Token de SonarCloud
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Token de GitHub para obtener información de PR
