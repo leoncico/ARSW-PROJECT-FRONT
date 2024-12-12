@@ -10,7 +10,6 @@ const boardApp = (function () {
         let x = userTank.posx;
         let y = userTanks.posy;
         let dir = userTank.rotation;
-
         let newPosX = x;
         let newPosY = y;
 
