@@ -1,42 +1,37 @@
-name: Build and Analyze
-
+name: SonarQube
 on:
   push:
     branches:
       - main
   pull_request:
     types: [opened, synchronize, reopened]
-
 jobs:
-  sonarqube:
-    name: SonarQube Analysis
+  build:
+    name: Build and analyze
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # No shallow clone, necesario para un análisis más relevante
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
         with:
-          node-version: '16'  # Cambia a la versión que necesites
-
-      - name: Install dependencies
-        run: npm install  # Instala las dependencias de tu proyecto
-
-      - name: Add execute permissions for Jest
-        run: chmod +x node_modules/.bin/jest  # Añadir permisos de ejecución a Jest
-
-      - name: Run tests with coverage
-        run: npm test -- --coverage  # Ejecuta las pruebas y genera el informe de cobertura
-
-      - name: SonarCloud Analysis
-        uses: SonarSource/sonarqube-scan-action@v4
+          java-version: 17
+          distribution: 'zulu' # Alternative distribution options are available.
+      - name: Cache SonarQube packages
+        uses: actions/cache@v4
         with:
-          projectKey: leoncico_ARSW-PROJECT-FRONT  # Cambia esto a tu clave de proyecto en SonarCloud
-          organization: leoncico-2  # Cambia esto a tu organización en SonarCloud
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Build and analyze
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  # Token de SonarCloud
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Token de GitHub para obtener información de PR
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=leoncico_ARSW-PROJECT-FRONT
