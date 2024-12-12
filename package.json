@@ -8,11 +8,10 @@
     "jest-environment-jsdom": "^29.7.0",
     "jest-sonar-reporter": "^2.0.0"
   },
- "scripts": {
-  "test": "jest",
-  "coverage": "jest --coverage --coverageReporters=lcov"
-},
-
+  "scripts": {
+    "test": "jest",
+    "coverage": "jest --coverage"
+  },
   "dependencies": {
     "stompjs": "^2.3.3"
   },
